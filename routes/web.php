@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\create\ConversionController;
+use App\Http\Controllers\youtube\YoutubeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,4 +34,19 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::post('/process', [YoutubeController::class, 'processVideo'])->name('process');
+
+    Route::group([
+        'prefix' => '/create',
+        'as' => 'create'
+    ], function () {
+
+        Route::get('/blog', [ConversionController::class, 'createBlogPost'])->name('blog');
+
+        Route::get('/social', [ConversionController::class, 'createSocialPost'])->name('social');
+
+        Route::get('/reels', [ConversionController::class, 'createReels'])->name('reels');
+
+    });
 });
